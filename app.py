@@ -48,6 +48,32 @@ def login():
             flash("Invalid username or password")
     return render_template('login.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Check if username exists
+        cursor.execute("SELECT * FROM Users WHERE username = ?", (username,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            flash('Username already exists. Choose a different one.')
+            return render_template('register.html')
+
+        # Insert new user
+        cursor.execute("INSERT INTO Users (username, password) VALUES (?, ?)", (username, password))
+        conn.commit()
+
+        flash('Account created! Please sign in.')
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
@@ -64,6 +90,3 @@ def logout():
     session.clear()
     flash("You have been logged out.")
     return redirect(url_for('login'))
-
-if __name__ == '__main__':
-    app.run(debug=True)

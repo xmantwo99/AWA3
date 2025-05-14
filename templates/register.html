@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Sign In{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
-<h2>Sign In</h2>
+<h2>Create an Account</h2>
 <form method="POST">
     <label for="username">Username:</label><br>
     <input type="text" name="username" required><br><br>
@@ -11,7 +11,6 @@
     <label for="password">Password:</label><br>
     <input type="password" name="password" required><br><br>
 
-    <button type="submit">Login</button>
+    <button type="submit">Register</button>
 </form>
 {% endblock %}
-
